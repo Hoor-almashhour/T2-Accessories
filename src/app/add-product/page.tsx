@@ -44,9 +44,9 @@ export default function AddProductPage() {
   };
 
   return (
-    <section className="px-20 bg-gray-100 py-25 ">
-      <div className="container mx-auto px-4 max-w-lg ">
-        <h1 className="text-2xl flex items-center  justify-center gap-3 md:text-3xl  font-bold  text-gray-800 mb-8">
+    <section className="px-20 bg-gray-100 py-20 ">
+      <div className=" mx-auto max-w-lg">
+        <h1 className="text-sm flex items-center  justify-center gap-3 md:text-3xl  font-bold  text-gray-800 mb-8">
           <FaPlus className='text-2xl text-gray-800 font-bold' /> 
           إضافة منتج جديد
         </h1>
@@ -64,7 +64,7 @@ export default function AddProductPage() {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="مثال: أرضية كاملة لسيارات جيتور"
+              placeholder="Product Title"
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
             />
           </div>
@@ -97,7 +97,7 @@ export default function AddProductPage() {
           {/* زر الإرسال */}
           <button
             type="submit"
-            className="w-full bg-amber-400 hover:bg-amber-500 text-white font-semibold py-2 rounded-lg transition"
+            className="w-full text-sm bg-amber-400 hover:bg-amber-500 text-white font-semibold py-2 rounded-lg transition"
           >
             💾 Save Product
           </button>

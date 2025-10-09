@@ -1,34 +1,27 @@
-
 'use client';
 import Image from "next/image";
 import { useState } from 'react';
 import Link from 'next/link';
-import { FaSearch, FaUser, FaBars, FaTimes, FaPhone,  } from 'react-icons/fa';
+import { FaUser, FaBars, FaTimes, FaPhone } from 'react-icons/fa';
 import { MdKeyboardArrowDown, MdKeyboardArrowLeft } from "react-icons/md";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isShopOpen, setIsShopOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleShop = () => setIsShopOpen(!isShopOpen);
 
-  const toggleSearch = () => {
-    setIsSearchOpen(!isSearchOpen);
-  };
+
 
   return (
-    <nav className="bg-gray-200 shadow-lg">
+    <nav className="bg-gray-200 shadow-lg relative">
       {/* الشريط العلوي */}
-      <div className="bg-amber-300 text-white  py-5 px-4 ">
-        <div className="container mx-auto flex justify-between items-center text-sm  mt-5 flex-wrap gap-5">
-          <span className="flex items-center gap-2">
-            <span>100% Secure Delivery Without Contacting The Courier</span>
-          </span>
-          
+      <div className="bg-amber-300 text-white py-5 px-4 ">
+        <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-sm mt-5 text-center sm:text-left gap-2 ">
+          <span>100% Secure Delivery Without Contacting The Courier</span>
           <div className="flex items-center gap-4">
-            <Link href="https://wa.me/96407754424278" className=" flex items-center gap-2 underline">
+            <Link href="https://wa.me/96407754424278" className="flex items-center gap-2 underline">
               <FaPhone className="text-white" />
               Need Help? Call Us : +964 07754424278
             </Link>
@@ -37,20 +30,17 @@ const Navbar = () => {
       </div>
 
       {/* الشريط الرئيسي */}
-      <div className="containter mx-auto  max-w-7xl  mt-[-10px]
-                 ">
-         <div className="md:flex md:items-center md:justify-between md:flex-row md:py-4 bg-white rounded-2xl md:h-[66px]
-             h-[250px] mx-10 flex flex-col items-center py-3.5">
-          {/* الشعار */} 
-          <div className="flex items-center space-x-8 rtl:space-x-reverse ">
-               
+      <div className="container mx-auto max-w-7xl mt-[-10px]">
+        <div className="md:flex md:items-center md:justify-between md:flex-row md:py-4 bg-white rounded-2xl md:h-[66px]
+             h-[250px] mx-10 flex flex-col items-center py-3.5 relative">
+
+          {/* الشعار */}
+          <div className="flex items-center space-x-8 rtl:space-x-reverse">
             <Image src="/Logo/t2-logo.jpg" alt="logo" width={150} height={66}
-            priority
-             className=" rounded-2xl " />
-            
+              priority
+              className="rounded-2xl" />
           </div>
 
-         
           {/* شريط البحث - للشاشات المتوسطة والكبيرة */}
             <div className="w-full flex items-center flex-1 md:max-w-2xl ">
                 <div className="flex w-full bg-gray-100 rounded-lg overflow-hidden mx-3 ">
@@ -68,24 +58,89 @@ const Navbar = () => {
                 </div>
             </div>
 
-
           {/* الأيقونات */}
           <div className="flex items-center space-x-4 rtl:space-x-reverse mx-4">
-
-                {/* أيقونة المستخدم */}
-                <button className="flex items-center space-x-1 text-gray-700 hover:text-amber-300  transition-colors">
-                    <FaUser size={16} />
-                    <Link href="/MyAccountPage" className=" sm:inline">Login</Link>
-                </button>
+            {/* أيقونة المستخدم */}
+            <button className="flex items-center space-x-1 text-gray-700 hover:text-amber-300 transition-colors">
+              <FaUser size={16} />
+              <Link href="/MyAccountPage" className="sm:inline">Login</Link>
+            </button>
           </div>
         </div>
       </div>
-
-      {/* القائمة الرئيسية */}
+       {/* القائمة الرئيسية */}
       <div className=" bg-gray-200 py-5 px-4 ">
-        <div className="container px-4 mx-auto ">
+        <div className=" container md:px-10 mx-auto ">
+           {/* زر الهمبرغر (للجوال فقط) */}
+           <div className="flex justify-center md:hidden mt-2"> 
+              <button
+                onClick={toggleMenu}
+                className=" text-gray-700  hover:text-amber-300 transition-colors md:hidden"
+              >
+                {isMenuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
+              </button>
+            </div> 
+            {/* القائمة عند فتح الهمبرغر */}
+            {isMenuOpen && (
+              <div className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-start pt-20 px-6 overflow-y-auto transition-all">
+                <button
+                  onClick={toggleMenu}
+                  className="absolute top-5 right-5 text-gray-700 hover:text-blue-600"
+                >
+                  <FaTimes size={28} />
+                </button>
+
+                <nav className="flex flex-col items-center space-y-6 text-lg font-medium">
+                  <Link href="/" onClick={toggleMenu} className="hover:text-blue-600">Home</Link>
+                  <Link href="/about" onClick={toggleMenu} className="hover:text-blue-600">About Us</Link>
+
+                  {/* قسم شوب */}
+                  <div className="w-full text-center">
+                    <button
+                      onClick={toggleShop}
+                      className="flex items-center justify-center w-full hover:text-blue-600"
+                    >
+                      <span>Shop</span>
+                      <MdKeyboardArrowDown
+                        className={`ml-1 transform transition-transform ${isShopOpen ? 'rotate-180' : ''}`}
+                      />
+                    </button>
+
+                    {isShopOpen && (
+                      <div className="mt-3 flex flex-col items-center space-y-2 text-gray-700 text-base">
+                        {/* Jetour submenu */}
+                        <details className="w-full">
+                          <summary className="cursor-pointer hover:text-blue-600">JETOUR</summary>
+                          <div className="flex flex-col space-y-1 mt-2">
+                            <Link href="/shop/JETOUR/T1" onClick={toggleMenu}>JETOUR T1</Link>
+                            <Link href="/shop/JETOUR/T2" onClick={toggleMenu}>JETOUR T2</Link>
+                            <Link href="/shop/JETOUR/X70" onClick={toggleMenu}>JETOUR X70</Link>
+                            <Link href="/shop/JETOUR/X90" onClick={toggleMenu}>JETOUR X90</Link>
+                            <Link href="/shop/JETOUR/Daishing" onClick={toggleMenu}>JETOUR Dasihing</Link>
+                            <Link href="/shop/JETOUR/L6" onClick={toggleMenu}>JETOUR L6</Link>
+                          </div>
+                        </details>
+
+                        {/* باقي الشركات */}
+                        <Link href="/shop/MG" onClick={toggleMenu}>MG</Link>
+                        <Link href="/shop/HAVAL" onClick={toggleMenu}>HAVAL</Link>
+                        <Link href="/shop/TOYOTA" onClick={toggleMenu}>TOYOTA</Link>
+                        <Link href="/shop/SOUEAST09" onClick={toggleMenu}>SOUEAST 09</Link>
+                        <Link href="/shop/SOUEAST07" onClick={toggleMenu}>SOUEAST 07</Link>
+                        <Link href="/shop/SOUEAST06" onClick={toggleMenu}>SOUEAST 06</Link>
+                        <Link href="/shop/DodgRAM" onClick={toggleMenu}>DODG RAM</Link>
+                        <Link href="/shop/FORD" onClick={toggleMenu}>FORD</Link>
+                        <Link href="/shop/GMC" onClick={toggleMenu}>GMC SEERA & SELVRADO</Link>
+                        <Link href="/shop/BYD" onClick={toggleMenu}>BYD</Link>
+                        <Link href="/shop/TANK" onClick={toggleMenu}>TANK 300</Link>
+                      </div>
+                    )}
+                  </div>
+                </nav>
+              </div>
+            )}
           {/* للشاشات الكبيرة */}
-          <div className="hidden lg:flex items-center justify-between  flex-row-reverse ">
+          <div className="hidden md:flex items-center justify-between  flex-row-reverse ">
             <div className="flex items-center space-x-8 rtl:space-x-reverse">
               <Link href="/" className="text-gray-700 hover:text-amber-300 transition-colors font-medium">
                 Home
@@ -175,66 +230,11 @@ const Navbar = () => {
             {/* Select a category للشاشات الكبيرة */}
             <div className="flex items-center space-x-4 rtl:space-x-reverse">
               <span className="text-gray-600 font-medium">Select a category</span>
+             
             </div>
           </div>
-
-          {/* القائمة للشاشات الصغيرة */}
-          {isMenuOpen && (
-            <div className=" bg-white py-4 border-t border-gray-200 md:hidden">
-              <div className="flex flex-col space-y-4">
-                <Link 
-                  href="/" 
-                  className="text-gray-700 hover:text-amber-300 transition-colors font-medium py-2"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Home
-                </Link>
-                <Link 
-                  href="/about" 
-                  className="text-gray-700 hover:text-amber-300 transition-colors font-medium py-2"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  About Us
-                </Link>
-                <div>
-                  <button className="flex items-center justify-between w-full text-gray-700 hover:text-amber-300 transition-colors font-medium py-2">
-                    <span>Shop</span>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                  {/* قائمة فرعية للجوال */}
-                  <div className="pl-4 mt-2 space-y-2">
-                     <Link href="/shop/JETOUR" className="block  text-gray-600 hover:text-amber-300">
-                      JETOUR
-                    </Link>
-                    <Link href="/shop/TOYOTA" className="block text-gray-600 hover:text-amber-300">
-                      TOYOTA
-                    </Link>
-                    <Link href="/shop/MG" className="block text-gray-600 hover:text-amber-300">
-                      MG
-                    </Link>
-                    <Link href="/shop/HAVAL" className="block text-gray-600 hover:text-amber-300">
-                      HAVAL
-                    </Link>
-                  </div>
-                </div>
-                
-                {/* Select a category للجوال */}
-                <div className="pt-4  bg-gray-200 py-10 px-4 ">
-                  <span className="text-gray-600 font-medium">Select a category</span>
-                   <button 
-                        onClick={toggleMenu}
-                        className=" text-gray-700 hover:text-amber-300 transition-colors md:hidden"
-                        >
-                        {isMenuOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
-      </div>
+        </div>  
     </nav>
   );
 };
