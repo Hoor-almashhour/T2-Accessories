@@ -1,103 +1,195 @@
+'use client';
+
 import Image from "next/image";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+
+import Link from "next/link";
+import ProductCard from "./components/ProductCard/ProductCard";
+import { FiX } from "react-icons/fi";
+
+type Product = {
+  title: string;
+  image: string;
+  whatsappNumber: string;
+};
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [products, setProducts] = useState<Product[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+   const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 6; // 👈 عدد المنتجات في كل صفحة
+
+  // ✅ قراءة المنتجات من localStorage عند تحميل الصفحة
+  useEffect(() => {
+    const storedProducts = JSON.parse(localStorage.getItem("products") || "[]");
+
+    // المنتجات الافتراضية (الثابتة)
+    const defaultProducts: Product[] = [
+      {
+      title: "T2 أرضية أحادية طبقة كاملة لسيارات جيتور",
+      image: "/product/photo1.jpg",
+      whatsappNumber: "9647754424278",
+    },
+    {
+      title: "T2 أرضية أحادية طبقة كاملة لسيارات جيتور",
+      image: "/product/photo4.jpg",
+      whatsappNumber: "9647754424278",
+    },
+    {
+      title: "T2 حقيبة جانبية لجيتور",
+      image: "/product/photo3.jpg",
+      whatsappNumber: "9647754424278",
+    },
+    {
+      title: "T2 حقيبة جانبية لجيتور",
+      image: "/product/photo2.jpg",
+      whatsappNumber: "9647754424278",
+    },
+    {
+      title: "T2 درج جانبي طويل وثقيل لجيتور",
+      image: "/product/photo5.jpg",
+      whatsappNumber: "9647754424278",
+    },
+    {
+      title: "T2 درج جانبي طويل وثقيل لجيتور",
+      image: "/product/photo6.jpg",
+      whatsappNumber: "9647754424278",
+    },
+    ];
+      setProducts(storedProducts.length > 0 ? storedProducts : defaultProducts);
+    // دمج الاثنين معًا
+    /*setProducts([...defaultProducts,]);*/
+  }, []);
+
+    const totalPages = Math.ceil(products.length / productsPerPage);
+
+
+
+  const openModal = (product: Product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const deleteProduct = (title: string) => {
+    const updated = products.filter((p) => p.title !== title);
+    setProducts(updated);
+    localStorage.setItem("products", JSON.stringify(updated));
+    closeModal();
+  };
+
+  const editProduct = (title: string) => {
+    alert(`فتح صفحة تعديل المنتج: ${title}`);
+    closeModal();
+  };
+
+   const indexOfLast = currentPage * productsPerPage;
+  const indexOfFirst = indexOfLast - productsPerPage;
+  const currentProducts = products.slice(indexOfFirst, indexOfLast);
+  return (
+    <>
+      <section className="py-12 bg-gray-100">
+        <div className="container mx-auto px-4">
+          {/* العنوان + زر الإضافة */}
+          <div className="flex justify-between items-center mb-8 text-center px-4">
+            <motion.h2
+              className="text-2xl md:text-3xl font-bold text-gray-800"
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              Shop
+            </motion.h2>
+
+            <Link
+              href="/add-product"
+              className="text-white bg-amber-300 px-4 py-2 rounded-lg hover:bg-amber-400 transition text-sm font-medium"
+            >
+              + Add Product
+            </Link>
+          </div>
+
+          {/* شبكة المنتجات */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {currentProducts.slice(0, 6).map((product, index) => (
+              <div
+                key={index}
+                onClick={() => openModal(product)}
+                className="cursor-pointer"
+              >
+                <ProductCard {...product} />
+              </div>
+            ))}
+          </div>
+
+          {/* ✅ أزرار التنقل بين الصفحات */}
+          <div className="flex justify-center mt-8 gap-2">
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentPage(i + 1)}
+                className={`px-4 py-2 rounded-full border ${
+                  currentPage === i + 1
+                    ? "bg-amber-300 text-white"
+                    : "bg-white text-gray-700 hover:bg-gray-100"
+                } transition`}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+
+
+
+      {/* نافذة التعديل / الحذف */}
+      {isModalOpen && selectedProduct && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-lg p-6 w-80 text-center relative">
+            <button
+              onClick={closeModal}
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+            >
+              <FiX className=" ext-gray-500 text-lg cursor-pointer" />
+            </button>
+
+            <Image
+              src={selectedProduct.image}
+              alt={selectedProduct.title}
+              width={250}
+              height={250}
+              className="rounded-lg w-full h-48 object-cover mb-4"
+            />
+            <h3 className="text-lg font-semibold mb-2">
+              {selectedProduct.title}
+            </h3>
+
+            <div className="flex justify-center gap-3 mt-4">
+              <button
+                onClick={() => editProduct(selectedProduct.title)}
+                className="bg-amber-300 text-white px-7 py-2 rounded-lg hover:bg-amber-500 transition"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => deleteProduct(selectedProduct.title)}
+                className="bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-700 transition"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
