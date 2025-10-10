@@ -140,7 +140,7 @@ export default function Home() {
               <button
                 key={i}
                 onClick={() => setCurrentPage(i + 1)}
-                className={`px-4 py-2 rounded-full border ${
+                className={`px-4 py-2 rounded-full border cursor-pointer ${
                   currentPage === i + 1
                     ? "bg-amber-300 text-white"
                     : "bg-white text-gray-700 hover:bg-gray-100"

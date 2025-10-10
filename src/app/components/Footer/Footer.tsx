@@ -3,7 +3,6 @@ import { FaInstagram, FaTiktok, FaFacebookF, FaPhone } from 'react-icons/fa';
 import Image from "next/image";
 import Link from 'next/link';
 import { FaLocationDot } from 'react-icons/fa6';
-import { BsFillTelephoneFill } from 'react-icons/bs';
 const Footer = () => {
   return (
     <footer className="text-black bg-amber-300 py-8 px-4">
