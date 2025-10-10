@@ -23,46 +23,50 @@ export default function Home() {
   const productsPerPage = 6; // 👈 عدد المنتجات في كل صفحة
 
   // ✅ قراءة المنتجات من localStorage عند تحميل الصفحة
-  useEffect(() => {
-    const storedProducts = JSON.parse(localStorage.getItem("products") || "[]");
+   useEffect(() => {
+        const storedProducts = JSON.parse(localStorage.getItem("products") || "[]");
 
-    // المنتجات الافتراضية (الثابتة)
-    const defaultProducts: Product[] = [
+        const defaultProducts: Product[] = [
+            {
+        title: "T2 أرضية أحادية طبقة كاملة لسيارات جيتور",
+        image: "/product/photo1.jpg",
+        whatsappNumber: "9647754424278",
+      },
       {
-      title: "T2 أرضية أحادية طبقة كاملة لسيارات جيتور",
-      image: "/product/photo1.jpg",
-      whatsappNumber: "9647754424278",
-    },
-    {
-      title: "T2 أرضية أحادية طبقة كاملة لسيارات جيتور",
-      image: "/product/photo4.jpg",
-      whatsappNumber: "9647754424278",
-    },
-    {
-      title: "T2 حقيبة جانبية لجيتور",
-      image: "/product/photo3.jpg",
-      whatsappNumber: "9647754424278",
-    },
-    {
-      title: "T2 حقيبة جانبية لجيتور",
-      image: "/product/photo2.jpg",
-      whatsappNumber: "9647754424278",
-    },
-    {
-      title: "T2 درج جانبي طويل وثقيل لجيتور",
-      image: "/product/photo5.jpg",
-      whatsappNumber: "9647754424278",
-    },
-    {
-      title: "T2 درج جانبي طويل وثقيل لجيتور",
-      image: "/product/photo6.jpg",
-      whatsappNumber: "9647754424278",
-    },
+        title: "T2 أرضية أحادية طبقة كاملة لسيارات جيتور",
+        image: "/product/photo4.jpg",
+        whatsappNumber: "9647754424278",
+      },
+      {
+        title: "T2 حقيبة جانبية لجيتور",
+        image: "/product/photo3.jpg",
+        whatsappNumber: "9647754424278",
+      },
+      {
+        title: "T2 حقيبة جانبية لجيتور",
+        image: "/product/photo2.jpg",
+        whatsappNumber: "9647754424278",
+      },
+      {
+        title: "T2 درج جانبي طويل وثقيل لجيتور",
+        image: "/product/photo5.jpg",
+        whatsappNumber: "9647754424278",
+      },
+      {
+        title: "T2 درج جانبي طويل وثقيل لجيتور",
+        image: "/product/photo6.jpg",
+        whatsappNumber: "9647754424278",
+      },
     ];
-      setProducts(storedProducts.length > 0 ? storedProducts : defaultProducts);
-    // دمج الاثنين معًا
-    /*setProducts([...defaultProducts,]);*/
+
+    // ✅ إذا فيه منتجات بالمخزن المحلي نعرضها، وإلا نعرض الافتراضية
+    if (storedProducts.length > 0) {
+      setProducts(storedProducts);
+    } else {
+      setProducts(defaultProducts);
+    }
   }, []);
+
 
     const totalPages = Math.ceil(products.length / productsPerPage);
 
