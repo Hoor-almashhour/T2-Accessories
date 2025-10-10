@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { FaUser, FaBars, FaTimes, FaPhone } from 'react-icons/fa';
 import { MdKeyboardArrowDown, MdKeyboardArrowLeft } from "react-icons/md";
-
+import { motion } from 'framer-motion';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isShopOpen, setIsShopOpen] = useState(false);
@@ -19,10 +19,15 @@ const Navbar = () => {
       {/* الشريط العلوي */}
       <div className="bg-amber-300 text-white py-5 px-4 ">
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-sm mt-5 text-center sm:text-left gap-2 ">
-          <span>100% Secure Delivery Without Contacting The Courier</span>
+          <motion.span 
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="font-extrabold shadow-amber-50 text-black">لبيع قطع غيار واكسسوارات لكافة أنواع السيارات T2 كماليات 
+          </motion.span>
           <div className="flex items-center gap-4">
-            <Link href="https://wa.me/96407754424278" className="flex items-center gap-2 underline">
-              <FaPhone className="text-white" />
+            <Link href="https://wa.me/96407754424278" className="flex items-center gap-2 underline font-bold text-black">
+              <FaPhone className="text-black" />
               Need Help? Call Us : +964 07754424278
             </Link>
           </div>
@@ -47,7 +52,7 @@ const Navbar = () => {
                     <input
                     type="text"
                     placeholder="Products Search..."
-                    className="flex-1 px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-transparent"
+                    className="flex-1 px-3 py-2 bg-gray-100 focus:outline-none focus:ring-3 focus:ring-amber-300 focus:border-transparent"
                     />
         
                 </div>

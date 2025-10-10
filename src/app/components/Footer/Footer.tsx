@@ -26,7 +26,7 @@ const Footer = () => {
         </div>
 
         {/* Social Media */}
-        <div className=' flex flex-col'>
+        <div className=' flex flex-col items-center justify-center'>
           <div className="flex space-x-4 items-center">
           <Link
             href="https://www.instagram.com/kmalyat_t2?igsh=dzR3bmljaTVnb3o0&utm_source=qr"
@@ -56,10 +56,17 @@ const Footer = () => {
 
         </div>
         <div className='mt-6'>
-           <Link href="https://wa.me/9647734000428" className="hidden md:flex items-center flex-row-reverse gap-2 font-extrabold">
+           <Link href="https://wa.me/9647734000428" className="flex items-center justify-center flex-row gap-2 font-extrabold">
 
-              <BsFillTelephoneFill className="text-black" />
+              <FaPhone className="text-black" />
                009647734000428
+            </Link>
+         </div>
+         <div className='mt-6'>
+           <Link href="https://wa.me/96407754424278" className="flex items-center justify-center flex-row gap-2 font-extrabold">
+
+              <FaPhone className="text-black" />
+               0096407754424278
             </Link>
          </div>
         </div>
@@ -67,7 +74,7 @@ const Footer = () => {
       </div>
 
       {/* Footer Bottom */}
-      <div className="mt-13 text-center text-lg text-black font-extrabold ">
+      <div className="mt-13 text-center text-sm text-black font-extrabold ">
        All rights reserved to T2 Accessories  © {new Date().getFullYear()} 
       </div>
     </footer>

@@ -13,12 +13,18 @@ export default function AddProductPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
+  const file = e.target.files?.[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result as string;
       setImageFile(file);
-      setImagePreview(URL.createObjectURL(file));
-    }
-  };
+      setImagePreview(base64);
+    };
+    reader.readAsDataURL(file); // ✅ تحويل إلى Base64
+  }
+};
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
