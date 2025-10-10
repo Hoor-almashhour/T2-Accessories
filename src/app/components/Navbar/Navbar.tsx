@@ -1,13 +1,32 @@
 'use client';
 import Image from "next/image";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FaUser, FaBars, FaTimes, FaPhone } from 'react-icons/fa';
 import { MdKeyboardArrowDown, MdKeyboardArrowLeft } from "react-icons/md";
 import { motion } from 'framer-motion';
-const Navbar = () => {
+import { useSearch } from "@/app/context/SearchContext";
+type Product = {
+  title: string;
+  image: string;
+  whatsappNumber: string;
+};
+
+const Navbar: React.FC = () => {
+  const { searchTerm, setSearchTerm, handleSearch } = useSearch();
+
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+
+  // تحميل المنتجات من localStorage أو API مرة واحدة فقط
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("products") || "[]");
+    setAllProducts(stored);
+  }, []);
+
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isShopOpen, setIsShopOpen] = useState(false);
+  
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleShop = () => setIsShopOpen(!isShopOpen);
@@ -19,16 +38,21 @@ const Navbar = () => {
       {/* الشريط العلوي */}
       <div className="bg-amber-300 text-white py-5 px-4 ">
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-sm mt-5 text-center sm:text-left gap-2 ">
-          <motion.span 
+          <div>
+            <strong  className="font-extrabold shadow-amber-50 text-black text-center text-2xl">  T2 كماليات <br/></strong>
+            <motion.p 
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="font-extrabold shadow-amber-50 text-black">لبيع قطع غيار واكسسوارات لكافة أنواع السيارات T2 كماليات 
-          </motion.span>
+            className="font-extrabold shadow-amber-50 text-black">لبيع قطع غيار واكسسوارات  جيتور وكافة أنواع السيارات 
+            
+          </motion.p>
+          </div>
+          
           <div className="flex items-center gap-4">
             <Link href="https://wa.me/96407754424278" className="flex items-center gap-2 underline font-bold text-black">
               <FaPhone className="text-black" />
-              Need Help? Call Us : +964 07754424278
+               +964 07754424278
             </Link>
           </div>
         </div>
@@ -51,13 +75,17 @@ const Navbar = () => {
                 <div className="flex w-full bg-gray-100 rounded-lg overflow-hidden mx-3 ">
                     <input
                     type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Products Search..."
-                    className="flex-1 px-3 py-2 bg-gray-100 focus:outline-none focus:ring-3 focus:ring-amber-300 focus:border-transparent"
+                    className="flex-1 px-3 py-2 bg-gray-100 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-300"
                     />
         
                 </div>
                 <div className="mx-3 ">
-                    <button className="w-32 rounded-lg px-3 py-2 bg-black text-white text-sm hover:bg-gray-800 transition-colors ">
+                    <button 
+                      onClick={() => handleSearch(allProducts)}
+                      className="w-32 cursor-pointer rounded-lg px-3 py-2 bg-black text-white text-sm hover:bg-gray-800 transition-colors ">
                       Search Now
                     </button>
                 </div>

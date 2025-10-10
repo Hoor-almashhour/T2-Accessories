@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import ProductCard from "./components/ProductCard/ProductCard";
 import { FiX } from "react-icons/fi";
+import { useSearch } from "./context/SearchContext";
 
 type Product = {
   title: string;
@@ -19,8 +20,12 @@ export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 6; // 👈 عدد المنتجات في كل صفحة
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 6; 
+
+    const { searchResults, setSearchResults } = useSearch();
+
 
   // ✅ قراءة المنتجات من localStorage عند تحميل الصفحة
    useEffect(() => {
@@ -58,15 +63,15 @@ export default function Home() {
         whatsappNumber: "9647754424278",
       },
     ];
+      
 
-    // ✅ إذا فيه منتجات بالمخزن المحلي نعرضها، وإلا نعرض الافتراضية
-    if (storedProducts.length > 0) {
-      setProducts(storedProducts);
-    } else {
-      setProducts(defaultProducts);
-      localStorage.setItem("products", JSON.stringify(defaultProducts));
-    }
-  }, []);
+    const data = storedProducts.length ? storedProducts : defaultProducts;
+    setProducts(data);
+    setSearchResults(data); // أول مرة نملأ البحث بالكل
+  }, [setSearchResults]);
+
+  const displayProducts = searchResults.length > 0 ? searchResults : products;
+
 
   // ✅ الاستماع لتغييرات localStorage من التبويبات الأخرى
     useEffect(() => {
@@ -76,18 +81,17 @@ export default function Home() {
         setCurrentPage(1); // العودة للصفحة الأولى عند إضافة منتج جديد
       };
 
-    window.addEventListener('storage', handleStorageChange);
+      window.addEventListener('storage', handleStorageChange);
     
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
+      return () => {
+        window.removeEventListener('storage', handleStorageChange);
+      };
+   }, []);
+    
 
 
 
-    const totalPages = Math.ceil(products.length / productsPerPage);
-
-
+  const totalPages = Math.ceil(products.length / productsPerPage);
 
   const openModal = (product: Product) => {
     setSelectedProduct(product);
@@ -140,7 +144,7 @@ export default function Home() {
 
           {/* شبكة المنتجات */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {currentProducts.slice(0, 6).map((product, index) => (
+           {displayProducts.map((product, index) => (
               <div
                 key={index}
                 onClick={() => openModal(product)}
