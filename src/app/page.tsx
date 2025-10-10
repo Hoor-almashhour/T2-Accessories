@@ -24,10 +24,10 @@ export default function Home() {
 
   // ✅ قراءة المنتجات من localStorage عند تحميل الصفحة
    useEffect(() => {
-        const storedProducts = JSON.parse(localStorage.getItem("products") || "[]");
+    const storedProducts = JSON.parse(localStorage.getItem("products") || "[]");
 
-        const defaultProducts: Product[] = [
-            {
+    const defaultProducts: Product[] = [
+      {
         title: "T2 أرضية أحادية طبقة كاملة لسيارات جيتور",
         image: "/product/photo1.jpg",
         whatsappNumber: "9647754424278",
@@ -64,8 +64,25 @@ export default function Home() {
       setProducts(storedProducts);
     } else {
       setProducts(defaultProducts);
+      localStorage.setItem("products", JSON.stringify(defaultProducts));
     }
   }, []);
+
+  // ✅ الاستماع لتغييرات localStorage من التبويبات الأخرى
+    useEffect(() => {
+      const handleStorageChange = () => {
+        const storedProducts = JSON.parse(localStorage.getItem("products") || "[]");
+        setProducts(storedProducts);
+        setCurrentPage(1); // العودة للصفحة الأولى عند إضافة منتج جديد
+      };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
 
 
     const totalPages = Math.ceil(products.length / productsPerPage);
