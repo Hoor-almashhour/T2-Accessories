@@ -39,7 +39,11 @@ const Navbar: React.FC = () => {
       <div className="bg-amber-300 text-white py-5 px-4 ">
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-sm mt-5 text-center sm:text-left gap-2 ">
           <div>
-            <strong  className="font-extrabold shadow-amber-50 text-black text-center text-2xl">  T2 كماليات <br/></strong>
+            <motion.strong 
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="font-extrabold shadow-amber-50 text-black text-center text-2xl">  T2 كماليات <br/></motion.strong>
             <motion.p 
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
