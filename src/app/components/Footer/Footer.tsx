@@ -1,5 +1,5 @@
 // components/Footer.tsx
-import { FaInstagram, FaTiktok, FaFacebookF, FaPhone, FaHandPointLeft } from 'react-icons/fa';
+import { FaInstagram, FaTiktok, FaFacebookF, FaPhone } from 'react-icons/fa';
 import Image from "next/image";
 import Link from 'next/link';
 import { FaLocationDot } from 'react-icons/fa6';

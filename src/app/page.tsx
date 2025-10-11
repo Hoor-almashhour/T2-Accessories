@@ -16,6 +16,7 @@ type Product = {
 };
 
 export default function Home() {
+  const [role, setRole] = useState<string | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,7 +25,9 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 6; 
 
-    const { searchResults, setSearchResults } = useSearch();
+  const { searchResults, setSearchResults } = useSearch();
+
+  
 
 
   // ✅ قراءة المنتجات من localStorage عند تحميل الصفحة
@@ -70,6 +73,14 @@ export default function Home() {
     setSearchResults(data); // أول مرة نملأ البحث بالكل
   }, [setSearchResults]);
 
+
+    useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedRole = localStorage.getItem("role");
+      setRole(storedRole);
+    }
+  }, []);
+
   const displayProducts = searchResults.length > 0 ? searchResults : products;
 
 
@@ -103,21 +114,23 @@ export default function Home() {
     setSelectedProduct(null);
   };
 
-  const deleteProduct = (title: string) => {
-    const updated = products.filter((p) => p.title !== title);
-    setProducts(updated);
-    localStorage.setItem("products", JSON.stringify(updated));
-    closeModal();
-  };
+   const deleteProduct = (title: string) => {
+    if (role !== 'admin') return;
+      const updated = products.filter(p => p.title !== title);
+      setProducts(updated);
+      localStorage.setItem('products', JSON.stringify(updated));
+      closeModal();
+    };
 
   const editProduct = (title: string) => {
+    if (role !== 'admin') return;
     alert(`فتح صفحة تعديل المنتج: ${title}`);
     closeModal();
   };
 
-   const indexOfLast = currentPage * productsPerPage;
-  const indexOfFirst = indexOfLast - productsPerPage;
-  const currentProducts = products.slice(indexOfFirst, indexOfLast);
+    const indexOfLast = currentPage * productsPerPage;
+    const indexOfFirst = indexOfLast - productsPerPage;
+    const currentProducts = products.slice(indexOfFirst, indexOfLast);
   return (
     <>
       <section className="py-12 bg-gray-100">
@@ -133,13 +146,14 @@ export default function Home() {
             >
               Shop
             </motion.h2>
-
-            <Link
-              href="/add-product"
-              className="text-white bg-amber-300 px-4 py-2 rounded-lg hover:bg-amber-400 transition text-sm font-medium"
-            >
-              + Add Product
-            </Link>
+            {role === "admin" && (
+              <Link
+                href="/add-product"
+                className="text-white bg-amber-300 px-4 py-2 rounded-lg hover:bg-amber-400 transition text-sm font-medium"
+              >
+                + Add Product
+              </Link>
+            )}
           </div>
 
           {/* شبكة المنتجات */}
@@ -173,48 +187,63 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-
-
-      {/* نافذة التعديل / الحذف */}
-      {isModalOpen && selectedProduct && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl shadow-lg p-6 w-80 text-center relative">
-            <button
-              onClick={closeModal}
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
-            >
-              <FiX className=" ext-gray-500 text-lg cursor-pointer" />
-            </button>
-
-            <Image
-              src={selectedProduct.image}
-              alt={selectedProduct.title}
-              width={250}
-              height={250}
-              className="rounded-lg w-full h-48 object-cover mb-4"
-            />
-            <h3 className="text-lg font-semibold mb-2">
-              {selectedProduct.title}
-            </h3>
-
-            <div className="flex justify-center gap-3 mt-4">
-              <button
-                onClick={() => editProduct(selectedProduct.title)}
-                className="bg-amber-300 text-white px-7 py-2 rounded-lg hover:bg-amber-500 transition"
+         {/* نافذة التعديل / الحذف */}
+          {isModalOpen && selectedProduct && (
+              <div
+                className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 cursor-zoom-out"
+                onClick={closeModal}
               >
-                Edit
-              </button>
-              <button
-                onClick={() => deleteProduct(selectedProduct.title)}
-                className="bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-700 transition"
-              >
-                Delete
-              </button>
-            </div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="relative"
+                  onClick={e => e.stopPropagation()} 
+                >
+              
+                <Image
+                  src={selectedProduct.image}
+                  alt={selectedProduct.title}
+                  width={400}
+                  height={600}
+                  className="object-contain max-h-[80vh] w-auto rounded-xl"
+                  priority
+                />
+                   
+                {/* زر الإغلاق في الزاوية */}
+                <button
+                  onClick={closeModal}
+                  className="absolute top-3 cursor-pointer right-3 text-white bg-black/50 hover:bg-black/70 p-2 rounded-full"
+                >
+                  <FiX className="text-2xl" />
+                </button>
+
+                {/* اسم المنتج يظهر في الأسفل */}
+                <div className="mt-4 px-3 w-full flex justify-center">
+                  <p className="text-white text-center text-sm sm:text-base md:text-lg font-semibold leading-relaxed break-words max-w-[90%] bg-black/50 px-3 py-2 rounded-lg">
+                    {selectedProduct.title}
+                  </p>
+                </div>
+              </motion.div>
+           
+              {role === "admin" && (
+                <div className="flex justify-center gap-3 mt-4 flex-wrap ">
+                  <button
+                    onClick={() => editProduct(selectedProduct.title)}
+                    className="bg-amber-300 text-white px-6 py-2 rounded-lg hover:bg-amber-500 transition text-sm sm:text-base"
+                  >
+                     Edit
+                  </button>
+                  <button
+                    onClick={() => deleteProduct(selectedProduct.title)}
+                    className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-700 transition text-sm sm:text-base"
+                  >
+                     Delete
+                  </button>
+               </div>
+              )}
           </div>
-        </div>
-      )}
+        )}
     </>
   );
 }

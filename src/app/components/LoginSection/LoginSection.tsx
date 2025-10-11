@@ -21,10 +21,30 @@ const LoginSection = () => {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle login logic here
-    console.log('Login data:', formData);
+     e.preventDefault();
+
+    const adminUsername = 'admin';
+    const adminPassword = '12345T2';
+
+    if (
+      formData.usernameOrEmail === adminUsername &&
+      formData.password === adminPassword
+    ) {
+      localStorage.setItem('role', 'admin');
+      alert('✅ تم تسجيل دخول الأدمن');
+      window.location.href = '/';
+    } else {
+      localStorage.setItem('role', 'guest');
+      alert('👤 تم تسجيل دخول مستخدم عادي');
+      window.location.href = '/';
+    }
   };
+
+    const handleLogout = () => {
+      localStorage.removeItem('role');
+      alert('👋 تم تسجيل الخروج');
+      window.location.href = '/';
+    };
 
   return (
   
@@ -84,12 +104,17 @@ const LoginSection = () => {
         
         <button
           type="submit"
-          className="w-full bg-amber-300 text-white py-2 px-4 rounded-md hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:ring-offset-2 transition-colors"
+          className="w-full bg-amber-300 cursor-pointer text-white py-2 px-4 rounded-md hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:ring-offset-2 transition-colors"
         >
           Log in
         </button>
       </form>
-      
+      <button
+          onClick={handleLogout}
+          className="w-full mt-4 bg-gray-200 cursor-pointer text-gray-800 py-2 rounded-md hover:bg-gray-300 transition-colors"
+        >
+          Logout
+      </button>
       <div className="mt-6 pt-6 border-t border-gray-200">
         <h3 className="text-lg font-medium mb-4">Search</h3>
         <div className="flex  w-full ">

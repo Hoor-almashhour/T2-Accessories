@@ -1,17 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { FaPlus } from 'react-icons/fa';
 
 export default function AddProductPage() {
   const router = useRouter();
-
   const [title, setTitle] = useState('');
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+    useEffect(() => {
+    const role = localStorage.getItem('role');
+    if (role !== 'admin') {
+      alert('🚫 غير مصرح لك بالدخول لهذه الصفحة');
+      router.replace('/');
+    }
+  }, [router]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
