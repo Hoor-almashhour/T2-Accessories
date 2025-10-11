@@ -76,13 +76,13 @@ const Navbar: React.FC = () => {
 
           {/* شريط البحث - للشاشات المتوسطة والكبيرة */}
             <div className="w-full flex items-center flex-1 md:max-w-2xl ">
-                <div className="flex w-full bg-gray-100 rounded-lg overflow-hidden mx-3 ">
+                <div className="flex w-full  bg-gray-100 rounded-lg overflow-hidden mx-3 ">
                     <input
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Products Search..."
-                    className="flex-1 px-3 py-2 bg-gray-100 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-300"
+                    className=" flex-1  w-full px-2 py-2 bg-gray-100 border-gray-300 rounded-lg"
                     />
         
                 </div>

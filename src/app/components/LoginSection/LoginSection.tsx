@@ -77,9 +77,9 @@ const LoginSection = () => {
             </label>
           </div>
           
-          <a href="#" className="text-sm text-gray-700 hover:text-amber-300">
+          <Link href="#" className="text-sm text-gray-700 hover:text-amber-300">
             Lost your password?
-          </a>
+          </Link>
         </div>
         
         <button
@@ -92,13 +92,13 @@ const LoginSection = () => {
       
       <div className="mt-6 pt-6 border-t border-gray-200">
         <h3 className="text-lg font-medium mb-4">Search</h3>
-        <div className="flex">
+        <div className="flex  w-full ">
           <input
             type="text"
             placeholder="Search"
-            className="flex-grow px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-amber-300"
+            className="flex-grow  w-full px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-amber-300"
           />
-          <button className="bg-gray-200 px-4 py-2 rounded-r-md hover:bg-gray-300 transition-colors">
+          <button className="bg-gray-200  px-4 py-2 rounded-r-md hover:bg-gray-300 transition-colors">
             🔍
           </button>
         </div>

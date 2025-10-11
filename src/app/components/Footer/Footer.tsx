@@ -1,5 +1,5 @@
 // components/Footer.tsx
-import { FaInstagram, FaTiktok, FaFacebookF, FaPhone } from 'react-icons/fa';
+import { FaInstagram, FaTiktok, FaFacebookF, FaPhone, FaHandPointLeft } from 'react-icons/fa';
 import Image from "next/image";
 import Link from 'next/link';
 import { FaLocationDot } from 'react-icons/fa6';
@@ -14,24 +14,30 @@ const Footer = () => {
           className="h-auto rounded-2xl " />
           </div>
 
-          {/* Location */}
-          <div className=" flex justify-center items-center flex-row-reverse mb-3 md:mb-5 md:text-left gap-2">
-            <div> <span className='text-black font-bold'>اضغط هنا</span></div>
-          
-            <Link 
-              href="https://maps.google.com/?q=35.431221,44.336586"
-            className="font-bold text-lg text-center flex items-center gap-2">كركوك - شارع المطار نهاية جسر المعارض 
-              <FaLocationDot />
-              
-            </Link>
+         {/* Location */}
+          <div className="flex justify-center items-center flex-row-reverse mb-3 md:mb-5 gap-2 flex-nowrap">
+            <div className="flex items-center justify-center shrink-0 whitespace-nowrap">
+              <span className="text-black font-bold text-sm">اضغط هنا</span>
+            </div>
+
+            <div className="shrink-0 whitespace-nowrap">
+              <Link
+                href="https://maps.google.com/?q=35.431221,44.336586"
+                className="text-sm font-bold md:text-lg text-center flex items-center justify-center gap-1 whitespace-nowrap"
+              >
+                العراق - كركوك - شارع المطار نهاية جسر المعارض
+                <FaLocationDot className="flex items-center justify-center" />
+              </Link>
+            </div>
           </div>
+
 
          {/* Social Media */}
           <div className=' flex flex-col items-center justify-center mt-5'>
 
              <div className="flex space-x-4 items-center flex-row-reverse gap-2">
                 <div className=' flex '>
-                  <span className='text-black font-bold'>اضغط هنا</span>
+                  <span className='text-black font-bold '>اضغط هنا</span>
                 </div>
                 <div className='flex gap-2'>
                   <Link
