@@ -114,14 +114,13 @@ export default function Home() {
     setSelectedProduct(null);
   };
 
-   const deleteProduct = (title: string) => {
-    if (role !== 'admin') return;
-      const updated = products.filter(p => p.title !== title);
+    const deleteProduct = (title: string) => {
+      const updated = products.filter((p) => p.title !== title);
       setProducts(updated);
-      localStorage.setItem('products', JSON.stringify(updated));
+      setSearchResults(updated);
+      localStorage.setItem("products", JSON.stringify(updated));
       closeModal();
-    };
-
+   };
   const editProduct = (title: string) => {
     if (role !== 'admin') return;
     alert(`فتح صفحة تعديل المنتج: ${title}`);
@@ -227,7 +226,7 @@ export default function Home() {
               </motion.div>
            
               {role === "admin" && (
-                <div className="flex justify-center gap-3 mt-4 flex-wrap ">
+                <div className="flex justify-center gap-3 mt-4 flex-wrap px-3">
                   <button
                     onClick={() => editProduct(selectedProduct.title)}
                     className="bg-amber-300 text-white px-6 py-2 rounded-lg hover:bg-amber-500 transition text-sm sm:text-base"

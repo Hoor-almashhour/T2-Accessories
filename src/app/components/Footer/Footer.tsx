@@ -15,22 +15,39 @@ const Footer = () => {
           </div>
 
          {/* Location */}
-          <div className="flex justify-center items-center flex-row-reverse mb-3 md:mb-5 gap-2 flex-nowrap">
-            <div className="flex items-center justify-center shrink-0 whitespace-nowrap">
-              <span className="text-black font-bold text-sm">اضغط هنا</span>
-            </div>
+         <div className='flex flex-col'>
+            <div className="flex justify-center items-center flex-row-reverse mb-3 md:mb-5 gap-2 flex-nowrap">
+                <div className="flex items-center justify-center shrink-0 whitespace-nowrap">
+                  <span className="text-black font-bold text-sm">اضغط هنا</span>
+                </div>
 
-            <div className="shrink-0 whitespace-nowrap">
-              <Link
-                href="https://maps.google.com/?q=35.431221,44.336586"
-                className="text-sm font-bold md:text-lg text-center flex items-center justify-center gap-1 whitespace-nowrap"
-              >
-                العراق - كركوك - شارع المطار نهاية جسر المعارض
-                <FaLocationDot className="flex items-center justify-center" />
-              </Link>
-            </div>
-          </div>
+                <div className="shrink-0 whitespace-nowrap">
+                  <Link
+                    href="https://maps.google.com/?q=35.431221,44.336586"
+                    className="text-sm font-bold md:text-lg text-center flex items-center justify-center gap-1 whitespace-nowrap"
+                  >
+                    العراق - كركوك - شارع المطار نهاية جسر المعارض
+                    <FaLocationDot className="flex items-center justify-center" />
+                  </Link>
+                </div>
+              </div>
+              <div className="flex justify-center items-center flex-row-reverse mb-3 md:mb-5 gap-2 flex-nowrap">
+                  <div className="flex items-center justify-center shrink-0 whitespace-nowrap">
+                    <span className="text-black font-bold text-sm">اضغط هنا</span>
+                  </div>
 
+                  <div className="shrink-0 whitespace-nowrap">
+                    <Link
+                      href="https://maps.google.com/?q=33.368534,44.409286"
+                      className="text-sm font-bold md:text-lg text-center flex items-center justify-center gap-1 whitespace-nowrap"
+                    >
+                      العراق - بغداد - شارع فلسطين  بشارع الطارق
+                      <FaLocationDot className="flex items-center justify-center" />
+                    </Link>
+                  </div>
+              </div>
+         </div>
+          
 
          {/* Social Media */}
           <div className=' flex flex-col items-center justify-center mt-5'>
