@@ -1,139 +1,114 @@
 'use client';
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import { useRouter } from "next/navigation";
+import { listenToAuth } from "@/lib/auth";
+import type { User } from "@supabase/supabase-js";
+import { FaPlus } from "react-icons/fa";
+import Image from "next/image";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { FaPlus } from 'react-icons/fa';
-
-export default function AddProductPage() {
+export default function AddProduct() {
   const router = useRouter();
-  const [title, setTitle] = useState('');
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [title, setTitle] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    const unsubscribe = listenToAuth(setUser);
+    return () => unsubscribe();
+  }, []);
 
-    useEffect(() => {
-    const role = localStorage.getItem('role');
-    if (role !== 'admin') {
-      alert('🚫 غير مصرح لك بالدخول لهذه الصفحة');
-      router.replace('/');
-    }
-  }, [router]);
+  useEffect(() => {
+    if (!file) return setPreview(null);
+    const objectUrl = URL.createObjectURL(file);
+    setPreview(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64 = reader.result as string;
-        setImageFile(file);
-        setImagePreview(base64);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!title || !imageFile) {
-      alert('⚠ يرجى تعبئة جميع الحقول قبل الحفظ');
+    if (!user || user.email !== "admin@t2.com") {
+      alert("❌ فقط الأدمن يمكنه الإضافة!");
+      return;
+    }
+    if (!title || !file) {
+      alert("⚠️ تأكد من إدخال اسم المنتج واختيار صورة");
       return;
     }
 
     setIsSubmitting(true);
-
     try {
-      // جلب المنتجات الحالية من localStorage
-      const existing = JSON.parse(localStorage.getItem('products') || '[]');
+      const fileName = `${Date.now()}_${file.name}`;
+      const { error: uploadError } = await supabase.storage
+        .from("products")
+        .upload(fileName, file);
 
-      const newProduct = {
-        title,
-        image: imagePreview,
-        whatsappNumber: "9647754424278" // ⚠ أضف هذا الحقل المطلوب
-      };
+      if (uploadError) throw uploadError;
 
-      // حفظ المنتج الجديد
-      const updatedProducts = [...existing, newProduct];
-      localStorage.setItem('products', JSON.stringify(updatedProducts));
+      const { data: publicUrlData } = supabase.storage
+        .from("products")
+        .getPublicUrl(fileName);
 
-      // ⚠ الانتظار قليلاً للتأكد من حفظ البيانات
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      alert('✅ تم إضافة المنتج بنجاح');
-      
-      // ⚠ استخدام replace بدلاً من push للتأكد من تحديث الصفحة
-      router.replace('/');
-      router.refresh(); // ⚡ إضافة هذا السطر لتحديث الصفحة
-      
-    } catch (error) {
-      console.error('Error saving product:', error);
-      alert('❌ حدث خطأ أثناء حفظ المنتج');
+      const imageUrl = publicUrlData.publicUrl;
+
+      const { error } = await supabase
+        .from("products")
+        .insert([{ title, image: imageUrl, created_at: new Date() }]);
+
+      if (error) throw error;
+
+      alert("✅ تم إضافة المنتج بنجاح!");
+      setTitle("");
+      setFile(null);
+      setPreview(null);
+      router.push("/");
+    } catch (err) {
+      console.error(err);
+      alert("حدث خطأ أثناء إضافة المنتج");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <section className="px-4 sm:px-6 lg:px-20 bg-gray-100 py-10 sm:py-20">
-      <div className="mx-auto max-w-lg">
-        <h1 className="text-xl flex items-center justify-center gap-3 md:text-3xl font-bold text-gray-800 mb-8">
-          <FaPlus className='text-2xl text-gray-800 font-bold' /> 
-          إضافة منتج جديد
+    <section className="px-4 sm:px-6 lg:px-20 py-10 bg-gray-100 min-h-screen">
+      <div className="max-w-lg mx-auto">
+        <h1 className="text-3xl font-bold flex items-center justify-center gap-3 mb-8 text-gray-800 text-center">
+          <FaPlus /> إضافة منتج جديد
         </h1>
-
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white shadow-lg rounded-2xl p-6 sm:p-11 space-y-6"
-        >
-          {/* إدخال العنوان الرئيسي */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Title
-            </label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Product Title"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
-              disabled={isSubmitting}
-            />
-          </div>
-
-          {/* رفع الصورة */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Image
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="w-full text-gray-700"
-              disabled={isSubmitting}
-            />
-            {imagePreview && (
-              <div className="mt-4">
-                <Image
-                  src={imagePreview}
+        <form onSubmit={handleAdd} className="bg-white shadow-lg rounded-2xl p-6 space-y-6">
+          <input
+            type="text"
+            placeholder="اسم المنتج"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full border px-3 py-2 rounded-lg"
+            disabled={isSubmitting}
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setFile(e.target.files?.[0] || null)}
+            className="w-full border px-3 py-2 rounded-lg"
+            disabled={isSubmitting}
+          />
+          {preview && (
+             <Image
+                  src={preview}
                   alt="Preview"
                   width={400}
                   height={300}
                   className="rounded-xl shadow-md w-full h-48 sm:h-64 object-cover"
                 />
-              </div>
-            )}
-          </div>
-
-          {/* زر الإرسال */}
+          )}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full cursor-pointer text-sm bg-amber-400 hover:bg-amber-500 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-amber-400 py-3 rounded-lg text-white font-semibold hover:bg-amber-500 transition"
           >
-            {isSubmitting ? '⏳ جاري الحفظ...' : '💾 Save Product'}
+            {isSubmitting ? "⏳ جاري الحفظ..." : "💾 حفظ المنتج"}
           </button>
         </form>
       </div>

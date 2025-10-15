@@ -6,23 +6,10 @@ import { FaUser, FaBars, FaTimes, FaPhone } from 'react-icons/fa';
 import { MdKeyboardArrowDown, MdKeyboardArrowLeft } from "react-icons/md";
 import { motion } from 'framer-motion';
 import { useSearch } from "@/app/context/SearchContext";
-type Product = {
-  title: string;
-  image: string;
-  whatsappNumber: string;
-};
 
 const Navbar: React.FC = () => {
+  
   const { searchTerm, setSearchTerm, handleSearch } = useSearch();
-
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
-
-  // تحميل المنتجات من localStorage أو API مرة واحدة فقط
-  useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("products") || "[]");
-    setAllProducts(stored);
-  }, []);
-
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isShopOpen, setIsShopOpen] = useState(false);
@@ -88,7 +75,7 @@ const Navbar: React.FC = () => {
                 </div>
                 <div className="mx-3 ">
                     <button 
-                      onClick={() => handleSearch(allProducts)}
+                      onClick={handleSearch}
                       className="w-32 cursor-pointer rounded-lg px-3 py-2 bg-black text-white text-sm hover:bg-gray-800 transition-colors ">
                       Search Now
                     </button>

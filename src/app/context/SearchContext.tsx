@@ -1,50 +1,53 @@
-"use client";
-import { createContext, useContext, useState, ReactNode } from "react";
+'use client';
+import { createContext, useContext, useState, ReactNode } from 'react';
 
-type Product = {
+export type Product = {
+  id?: number;
   title: string;
   image: string;
-  whatsappNumber: string;
+  whatsappNumber?: string;
+  created_at?: string;
 };
 
-type SearchContextType = {
+interface SearchContextType {
   searchTerm: string;
-  setSearchTerm: (value: string) => void;
+  setSearchTerm: (term: string) => void;
   searchResults: Product[];
   setSearchResults: (products: Product[]) => void;
-  handleSearch: (allProducts: Product[]) => void;
-};
+  allProducts: Product[];
+  setAllProducts: (products: Product[]) => void;
+  handleSearch: () => void;
+}
 
-const SearchContext = createContext<SearchContextType | undefined>(undefined);
+const SearchContext = createContext<SearchContextType>({} as SearchContextType);
 
-export const SearchProvider = ({ children }: { children: ReactNode }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+export const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<Product[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
 
-  const handleSearch = (allProducts: Product[]) => {
-    if (!searchTerm.trim()) {
-      setSearchResults(allProducts);
-      return;
-    }
-
-    const results = allProducts.filter((p) =>
-      p.title.toLowerCase().includes(searchTerm.toLowerCase())
+  const handleSearch = () => {
+    const results = allProducts.filter(product =>
+      product.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setSearchResults(results);
   };
 
   return (
     <SearchContext.Provider
-      value={{ searchTerm, setSearchTerm, searchResults, setSearchResults, handleSearch }}
+      value={{
+        searchTerm,
+        setSearchTerm,
+        searchResults,
+        setSearchResults,
+        allProducts,
+        setAllProducts,
+        handleSearch,
+      }}
     >
       {children}
     </SearchContext.Provider>
   );
 };
 
-// ✅ Hook جاهز للاستخدام في أي كومبوننت
-export const useSearch = () => {
-  const context = useContext(SearchContext);
-  if (!context) throw new Error("useSearch must be used within a SearchProvider");
-  return context;
-};
+export const useSearch = () => useContext(SearchContext);

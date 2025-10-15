@@ -5,13 +5,15 @@ import { FaWhatsapp } from "react-icons/fa";
 import Link from "next/link";
 
 type ProductCardProps = {
+  id?: number;
   title: string;
   image: string;
-  whatsappNumber: string;
+  whatsappNumber?: string;
+  created_at?: string;
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ title, image, whatsappNumber }) => {
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=مرحباً، أريد الاستفسار عن المنتج: ${encodeURIComponent(title)}`;
+  const whatsappLink = `https://wa.me/96407754424278?text=مرحباً، أريد الاستفسار عن المنتج: ${encodeURIComponent(title)}`;
 
   return (
     <motion.div
