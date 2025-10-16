@@ -136,27 +136,27 @@ const Navbar: React.FC = () => {
                         <details className="w-full">
                           <summary className="cursor-pointer hover:text-blue-600">JETOUR</summary>
                           <div className="flex flex-col space-y-1 mt-2">
-                            <Link href="/shop/JETOUR/T1" onClick={toggleMenu}>JETOUR T1</Link>
-                            <Link href="/shop/JETOUR/T2" onClick={toggleMenu}>JETOUR T2</Link>
-                            <Link href="/shop/JETOUR/X70" onClick={toggleMenu}>JETOUR X70</Link>
-                            <Link href="/shop/JETOUR/X90" onClick={toggleMenu}>JETOUR X90</Link>
-                            <Link href="/shop/JETOUR/Daishing" onClick={toggleMenu}>JETOUR Dasihing</Link>
-                            <Link href="/shop/JETOUR/L6" onClick={toggleMenu}>JETOUR L6</Link>
+                            <Link href="/JETOUR/T1" className="hover:text-amber-300" onClick={toggleMenu}>JETOUR T1</Link>
+                            <Link href="/JETOUR/T2" className="hover:text-amber-300" onClick={toggleMenu}>JETOUR T2</Link>
+                            <Link href="/JETOUR/X70"className="hover:text-amber-300" onClick={toggleMenu}>JETOUR X70</Link>
+                            <Link href="/JETOUR/X90"className="hover:text-amber-300" onClick={toggleMenu}>JETOUR X90</Link>
+                            <Link href="/JETOUR/Daishing"className="hover:text-amber-300" onClick={toggleMenu}>JETOUR Daishing</Link>
+                            <Link href="/JETOUR/L6"className="hover:text-amber-300" onClick={toggleMenu}>JETOUR L6</Link>
                           </div>
                         </details>
 
                         {/* باقي الشركات */}
-                        <Link href="/shop/MG" onClick={toggleMenu}>MG</Link>
-                        <Link href="/shop/HAVAL" onClick={toggleMenu}>HAVAL</Link>
-                        <Link href="/shop/TOYOTA" onClick={toggleMenu}>TOYOTA</Link>
-                        <Link href="/shop/SOUEAST09" onClick={toggleMenu}>SOUEAST 09</Link>
-                        <Link href="/shop/SOUEAST07" onClick={toggleMenu}>SOUEAST 07</Link>
-                        <Link href="/shop/SOUEAST06" onClick={toggleMenu}>SOUEAST 06</Link>
-                        <Link href="/shop/DodgRAM" onClick={toggleMenu}>DODG RAM</Link>
-                        <Link href="/shop/FORD" onClick={toggleMenu}>FORD</Link>
-                        <Link href="/shop/GMC" onClick={toggleMenu}>GMC SEERA & SELVRADO</Link>
-                        <Link href="/shop/BYD" onClick={toggleMenu}>BYD</Link>
-                        <Link href="/shop/TANK" onClick={toggleMenu}>TANK 300</Link>
+                        <Link href="/shop/MG" className="hover:text-amber-300"  onClick={toggleMenu}>MG</Link>
+                        <Link href="/shop/HAVAL" className="hover:text-amber-300" onClick={toggleMenu}>HAVAL</Link>
+                        <Link href="/shop/TOYOTA" className="hover:text-amber-300" onClick={toggleMenu}>TOYOTA</Link>
+                        <Link href="/shop/SOUEAST09" className="hover:text-amber-300" onClick={toggleMenu}>SOUEAST 09</Link>
+                        <Link href="/shop/SOUEAST07" className="hover:text-amber-300" onClick={toggleMenu}>SOUEAST 07</Link>
+                        <Link href="/shop/SOUEAST06" className="hover:text-amber-300" onClick={toggleMenu}>SOUEAST 06</Link>
+                        <Link href="/shop/DodgRAM" className="hover:text-amber-300" onClick={toggleMenu}>DODG RAM</Link>
+                        <Link href="/shop/FORD" className="hover:text-amber-300" onClick={toggleMenu}>FORD</Link>
+                        <Link href="/shop/GMC"className="hover:text-amber-300" onClick={toggleMenu}>GMC SEERA & SELVRADO</Link>
+                        <Link href="/shop/BYD" className="hover:text-amber-300" onClick={toggleMenu}>BYD</Link>
+                        <Link href="/shop/TANK"className="hover:text-amber-300" onClick={toggleMenu}>TANK 300</Link>
                       </div>
                     )}
                   </div>
@@ -191,22 +191,22 @@ const Navbar: React.FC = () => {
                     {/* القائمة الفرعية الخاصة بـ JETOUR */}
                     <div className="absolute top-0 right-full mt-0 w-48 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible transition-all duration-300 z-50">
                         <div className="py-2">
-                        <Link href="/shop/JETOUR/T1" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-amber-300">
+                        <Link href="/JETOUR/T1" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-amber-300">
                             JETOUR T1
                         </Link>    
-                        <Link href="/shop/JETOUR/T2" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-amber-300">
+                        <Link href="/JETOUR/T2" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-amber-300">
                             JETOUR T2
                         </Link>
-                        <Link href="/shop/JETOUR/X70" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-amber-300">
+                        <Link href="/JETOUR/X70" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-amber-300">
                             JETOUR X70
                         </Link>
-                        <Link href="/shop/JETOUR/X90" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-amber-300">
+                        <Link href="/JETOUR/X90" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-amber-300">
                             JETOUR X90
                         </Link>
-                        <Link href="/shop/JETOUR/Daishing" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-amber-300">
-                            JETOUR Dasihing
+                        <Link href="/JETOUR/Daishing" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-amber-300">
+                            JETOUR Daishing
                         </Link>
-                        <Link href="/shop/JETOUR/L6" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-amber-300">
+                        <Link href="/JETOUR/L6" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-amber-300">
                             JETOUR L6
                         </Link>
                         </div>

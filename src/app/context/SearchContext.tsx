@@ -1,13 +1,9 @@
 'use client';
 import { createContext, useContext, useState, ReactNode } from 'react';
+import { Product } from '../Types';
 
-export type Product = {
-  id?: number;
-  title: string;
-  image: string;
-  whatsappNumber?: string;
-  created_at?: string;
-};
+
+
 
 interface SearchContextType {
   searchTerm: string;

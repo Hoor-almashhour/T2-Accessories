@@ -7,10 +7,32 @@ import type { User } from "@supabase/supabase-js";
 import { FaPlus } from "react-icons/fa";
 import Image from "next/image";
 
+const CATEGORIES = [
+  "JETOUR T1",
+  "JETOUR T2", 
+  "JETOUR DASHING",
+  "JETOUR X70",
+  "JETOUR X90",
+  "JETOUR L6",
+  "BYD",
+  "Dodge Ram",
+  "FORD",
+  "GMC",
+  "HAVAL",
+  "MG",
+  "SOUEAST06",
+  "SOUEAST07",
+  "SOUEAST09",
+  "TANK 300" ,
+  "TOYOTA"
+];
+
+
 export default function AddProduct() {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [category, setCategory] = useState("");
   const [preview, setPreview] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,7 +55,7 @@ export default function AddProduct() {
       alert("❌ فقط الأدمن يمكنه الإضافة!");
       return;
     }
-    if (!title || !file) {
+    if (!title || !file || !category ) {
       alert("⚠️ تأكد من إدخال اسم المنتج واختيار صورة");
       return;
     }
@@ -55,21 +77,27 @@ export default function AddProduct() {
 
       const { error } = await supabase
         .from("products")
-        .insert([{ title, image: imageUrl, created_at: new Date() }]);
+        .insert([{ title, image: imageUrl,category , created_at: new Date() }]);
 
       if (error) throw error;
 
       alert("✅ تم إضافة المنتج بنجاح!");
       setTitle("");
+      setCategory("");
       setFile(null);
       setPreview(null);
-      router.push("/");
+        if (category === "JETOUR T1") {
+        router.push("/JETOUR/T1");
+      } else {
+        router.push("/");
+      }
     } catch (err) {
       console.error(err);
       alert("حدث خطأ أثناء إضافة المنتج");
     } finally {
       setIsSubmitting(false);
     }
+
   };
 
   return (
@@ -103,6 +131,22 @@ export default function AddProduct() {
                   className="rounded-xl shadow-md w-full h-48 sm:h-64 object-cover"
                 />
           )}
+
+          {/* ✅ حقل الفئة */}
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="w-full border px-3 py-2 rounded-lg"
+            disabled={isSubmitting}
+          >
+            <option value="">اختر الفئة</option>
+            {CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+
           <button
             type="submit"
             disabled={isSubmitting}

@@ -8,11 +8,12 @@ type ProductCardProps = {
   id?: number;
   title: string;
   image: string;
+  category?: string;
   whatsappNumber?: string;
   created_at?: string;
 };
 
-const ProductCard: React.FC<ProductCardProps> = ({ title, image, whatsappNumber }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ title, image, whatsappNumber , category}) => {
   const whatsappLink = `https://wa.me/96407754424278?text=مرحباً، أريد الاستفسار عن المنتج: ${encodeURIComponent(title)}`;
 
   return (
