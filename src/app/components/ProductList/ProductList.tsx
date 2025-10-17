@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { FiX } from 'react-icons/fi';
-import { FaPlus } from 'react-icons/fa';
+import { FaArrowLeft, FaArrowRight, FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import { listenToAuth } from '@/lib/auth';
@@ -180,21 +180,32 @@ export default function ProductList({ category }: { category?: string }) {
               </div>
 
               {/* أزرار التصفح */}
-              {totalPages > 1 && (
-                <div className="flex justify-center mt-8 gap-2">
-                  {Array.from({ length: totalPages }, (_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setCurrentPage(i + 1)}
-                      className={`px-4 py-2 rounded-full border ${
-                        currentPage === i + 1
-                          ? 'bg-amber-300 text-white border-amber-300'
-                          : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
-                      }`}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
+                {totalPages > 1 && (
+                <div className="flex justify-center mt-8 items-center gap-2">
+                  {/* زر السابق */}
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="px-3 py-3 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <FaArrowLeft />
+                  </button>
+
+                  {/* رقم الصفحة الحالي */}
+                  <span className="px-4 py-2 rounded-full bg-amber-300 text-white font-semibold">
+                    {currentPage} 
+                  </span>
+                  <span className="px-4 py-2 rounded-full bg-amber-300 text-white font-semibold">
+                      {totalPages}
+                  </span>
+                  {/* زر التالي */}
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-3 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                      <FaArrowRight />
+                  </button>
                 </div>
               )}
             </>
