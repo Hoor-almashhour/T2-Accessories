@@ -7,3 +7,5 @@ export interface Product {
   whatsappNumber?: string;
   created_at?: string;
 }
+
+

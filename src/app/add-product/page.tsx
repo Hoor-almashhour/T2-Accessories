@@ -17,7 +17,7 @@ const CATEGORIES = [
   "BYD",
   "Dodge Ram",
   "FORD",
-  "GMC",
+  "GMC ",
   "HAVAL",
   "MG",
   "SOUEAST06",

@@ -23,7 +23,7 @@ export default function ProductList({ category }: { category?: string }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 6;
+  const productsPerPage = 21;
   const { searchResults, setSearchResults, setAllProducts: setSearchAllProducts } = useSearch();
   const router = useRouter();
 
@@ -93,26 +93,32 @@ export default function ProductList({ category }: { category?: string }) {
   }, [searchResults, filteredProducts, category]);
 
   // ✅ حذف منتج (للأدمن فقط)
-  const deleteProduct = useCallback(
-    async (id?: number) => {
-      if (!id) return alert('لم يتم تمرير رقم المنتج');
-      if (user?.email !== 'admin@t2.com')
-        return alert('🚫 ليس لديك صلاحية الحذف');
-      if (!confirm('هل أنت متأكد من حذف هذا المنتج؟')) return;
+    const deleteProduct = useCallback(
+  async (id?: number) => {
+    if (!id) return alert('لم يتم تمرير رقم المنتج');
+    if (user?.email !== 'admin@t2.com')
+      return alert('🚫 ليس لديك صلاحية الحذف');
+    if (!confirm('هل أنت متأكد من حذف هذا المنتج؟')) return;
 
-      const { error } = await supabase.from('products').delete().eq('id', id);
-      if (error) {
-        console.error(error);
-        alert('حدث خطأ أثناء الحذف');
-      } else {
-        alert('✅ تم حذف المنتج بنجاح');
-        setIsModalOpen(false);
-        setSelectedProduct(null);
-        // لا حاجة لـ fetchProducts هنا لأن الـ subscription سيتولى التحديث
-      }
-    },
-    [user]
-  );
+    const { error } = await supabase.from('products').delete().eq('id', id);
+    if (error) {
+      console.error(error);
+      alert('حدث خطأ أثناء الحذف');
+    } else {
+      alert('✅ تم حذف المنتج بنجاح');
+      setIsModalOpen(false);
+      setSelectedProduct(null);
+
+      // ✅ تحديث الحالة فورًا بدون أخطاء TypeScript
+      setAllProducts(allProducts.filter((p) => p.id !== id));
+      setSearchResults(searchResults.filter((p) => p.id !== id));
+      setSearchAllProducts(searchResults.filter((p) => p.id !== id));
+    }
+  },
+  [user, allProducts, searchResults, setSearchResults, setSearchAllProducts]
+);
+
+
 
   const openModal = useCallback((product: Product) => {
     setSelectedProduct(product);
