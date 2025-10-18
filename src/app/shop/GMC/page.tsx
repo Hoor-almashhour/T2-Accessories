@@ -5,7 +5,7 @@ import ProductList from "@/app/components/ProductList/ProductList";
 const shopGMCPage = () => {
   return (
     <>
-     <ProductList category="GMC" />;
+     <ProductList category="GMC" />
     </>
   )
 

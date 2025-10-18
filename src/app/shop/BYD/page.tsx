@@ -5,7 +5,7 @@ import ProductList from "@/app/components/ProductList/ProductList";
 const shopBYDPage = () => {
   return (
     <>
-     <ProductList category="BYD" />;
+     <ProductList category="BYD" />
     </>
   )
 
